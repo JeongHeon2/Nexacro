@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.seoulit.logistics.busisvc.sales.mapper.ReleaseMapper">
+
+    <resultMap id="releaseInfoResult" type="kr.co.seoulit.logistics.busisvc.sales.dto.ReleaseInfoResDto" >
+        <result property="releaseNo" column="RELEASE_NO" />
+        <result property="contractDetailNo" column="CONTRACT_DETAIL_NO" />
+        <result property="customerName" column="CUSTOMER_NAME" />
+        <result property="itemCode" column="ITEM_CODE" />
+        <result property="itemName" column="ITEM_NAME" />
+        <result property="registerDate" column="REGISTER_DATE" />
+        <result property="dueDate" column="DUE_DATE" />
+        <result property="plannedReleaseDate" column="PLANNED_RELEASE_DATE" />
+        <result property="unitOfStock" column="UNIT_OF_STOCK" />
+        <result property="releaseAmount" column="RELEASE_AMOUNT" />
+        <result property="personInCharge" column="PERSON_IN_CHARGE" />
+        <result property="warehouseCode" column="WAREHOUSE_CODE" />
+        <result property="inspectionStatus" column="INSPECTION_STATUS" />
+    </resultMap>
+
+    <insert id="insertReleaseResult" parameterType="kr.co.seoulit.logistics.busisvc.sales.dto.ReleaseInfoReqDto">
+        INSERT INTO RELEASE
+        VALUES #{releaseNo},
+                #{contractDetailNo},
+                #{customerName},
+                #{itemCode},
+                #{itemName},
+                #{registerDate},
+                #{dueDate},
+                #{plannedReleaseDate},
+                #{unitOfStock},
+                #{releaseAmount},
+                #{personInCharge},
+                #{warehouseCode},
+                #{inspectionStatus}
+    </insert>
+
+
+
+    <!--    정헌 2024/10/22 수정함-->
+    <!--출고등록-->
+    <parameterMap type="map" id="releaseParameter">
+        <parameter property="contractDetailNo" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="vehicleSelected" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="ERROR_CODE" javaType="java.lang.Integer" jdbcType="DECIMAL" mode="OUT"/>
+        <parameter property="ERROR_MSG" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+
+    <select id="releaseRegist" parameterMap="releaseParameter" statementType="CALLABLE">
+		<![CDATA[
+        {call P_RELEASE_REGIST(?, ?, ?, ?)}
+        ]]>
+	</select>
+<!--    정헌 2024/10/22 수정함-->
+<!--    <select id="releaseRegist" statementType="CALLABLE">-->
+<!--		<![CDATA[-->
+<!--        {call P_RELEASE_REGIST(-->
+<!--              #{contractDetailNo ,jdbcType=VARCHAR,mode=IN},-->
+<!--              #{ERROR_CODE ,jdbcType=DECIMAL,mode=OUT},-->
+<!--              #{ERROR_MSG ,jdbcType=VARCHAR,mode=OUT}-->
+<!--              )}-->
+<!--        ]]>-->
+<!--	</select>-->
+
+
+    <!-- 출고현황-->
+    <select id="selectReleaseInfoList" resultMap="releaseInfoResult">
+        SELECT *
+        FROM RELEASE
+        ORDER BY RELEASE_NO DESC
+    </select>
+
+    <!-- 출고현황 수정-->
+    <update id="updateReleaseInfo" parameterType="kr.co.seoulit.logistics.busisvc.sales.to.ReleaseInfoTO">
+        UPDATE RELEASE
+        SET
+            REGISTER_DATE = #{registerDate},
+            PLANNED_RELEASE_DATE = #{plannedReleaseDate},
+            PERSON_IN_CHARGE = #{personInCharge},
+            WAREHOUSE_CODE = #{warehouseCode}
+        WHERE RELEASE_NO = #{releaseNo}
+    </update>
+
+    <delete id="deleteReleaseInfo" parameterType="String">
+      DELETE FROM RELEASE
+      WHERE RELEASE_NO = #{releaseNo}
+    </delete>
+
+</mapper>

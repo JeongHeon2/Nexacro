@@ -1,0 +1,591 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="output" width="1530" height="920" titletext="output" color="orangered" onload="output_onload" scrolltype="both">
+    <Layouts>
+      <Layout height="920" horizontalgap="0" mobileorientation="landscape" spacing="0px" tabletemplate="1* / 1*" verticalgap="0" width="1530">
+        <GroupBox id="Output_GroupBox" taborder="0" text="출고관리" left="10.00" top="30" width="1300" height="760" font="bold 28pt &quot;Arial&quot;" titlealign="topcenter" color="#020202" cssclass="grpBox_normal"/>
+        <Tab id="Tab" taborder="1" tabindex="0" left="30.00" top="50" width="1260" height="780">
+          <Tabpages>
+            <Tabpage id="Tabpage1" text="출고등록" font="12px/normal &quot;Calibri&quot;" letterSpacing="1px">
+              <Layouts>
+                <Layout>
+                  <GroupBox id="searchCnt_GroupBox" taborder="0" text="수주검색조건" left="0" top="12" width="579" height="65" font="normal bold 11pt/normal &quot;Arial&quot;" titlealign="topcenter" cssclass="grpBox_normal"/>
+                  <Calendar id="Calendar01" taborder="1" left="394.00" top="36" width="156" height="34" dateformat="yyyy-MM-dd" displaynulltext="종료일" font="normal bold 12pt/normal &quot;Arial&quot;" visible="false" color="orangered"/>
+                  <Calendar id="Calendar00" taborder="2" left="230.00" top="36" width="156" height="34" dateformat="yyyy-MM-dd" displaynulltext="시작일" font="normal bold 12pt/normal &quot;Arial&quot;" visible="false" color="orangered"/>
+                  <Edit id="codeEdit" taborder="3" left="259.00" top="35" width="207" displaynulltext="거래처 조회" font="normal normal 11pt/normal &quot;Arial&quot;" visible="false" cssclass="edit_normal" height="34" oneditclick="Tab_Tabpage1_codeEdit_oneditclick"/>
+                  <Radio id="searchRadio" taborder="4" left="7.00" top="37" width="193" height="24" innerdataset="innerdataset" codecolumn="codecolumn" datacolumn="datacolumn" direction="vertical" font="normal bold 11pt/normal &quot;Arial&quot;" cssclass="edit_normal" onitemchanged="Tab_Tabpage1_searchRadio_onitemchanged" onitemclick="Tab_Tabpage1_searchRadio_onitemclick">
+                    <Dataset id="innerdataset">
+                      <ColumnInfo>
+                        <Column id="codecolumn" size="256"/>
+                        <Column id="datacolumn" size="256"/>
+                      </ColumnInfo>
+                      <Rows>
+                        <Row>
+                          <Col id="codecolumn">searchByDate</Col>
+                          <Col id="datacolumn">기간검색</Col>
+                        </Row>
+                        <Row>
+                          <Col id="codecolumn">searchByCustomer</Col>
+                          <Col id="datacolumn">거래처검색</Col>
+                        </Row>
+                      </Rows>
+                    </Dataset>
+                  </Radio>
+                  <Button id="searchCont_Button" taborder="5" text="수주현황" left="589.00" top="36" width="90" height="34" color="black" textAlign="center" font="bold 10pt/normal &quot;Calibri&quot;" background="lightgray" onclick="Tab_Tabpage1_searchCont_Button_onclick" borderRadius="5px"/>
+                  <Edit id="selectVehicle_Button" taborder="6" displaynulltext="택배사 선택" left="692.00" top="36" width="120" height="34" color="black" textAlign="center" font="bold 10pt/normal &quot;Calibri&quot;" background="lightblue" oneditclick="Tab_Tabpage1_selectVehicle_Button_onclick" borderRadius="5px" visible="true"/>
+                  <Button id="Edit00" taborder="7" text="출고등록" left="822.00" top="36" width="118" height="34" background="lightcyan" font="bold 10pt/normal &quot;Calibri&quot;" color="black" onclick="Tab_Tabpage1_AddOutput_Button_onclick" borderRadius="5px"/>
+                  <Grid id="Grid00" taborder="7" left="0" top="90" width="1240" height="240" binddataset="gds_contractInfo" color="orangered" oncellclick="Tab_Tabpage1_Grid00_oncellclick" scrolltype="none">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="30"/>
+                          <Column size="140"/>
+                          <Column size="140"/>
+                          <Column size="130"/>
+                          <Column size="130"/>
+                          <Column size="140"/>
+                          <Column size="140"/>
+                          <Column size="140"/>
+                          <Column size="140"/>
+                          <Column size="100"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="24" band="head"/>
+                          <Row size="30" band="head"/>
+                          <Row size="26"/>
+                        </Rows>
+                        <Band id="head">
+                          <Cell colspan="10" text="출고가능 수주 리스트"/>
+                          <Cell row="1" edittype="none" displaytype="normal"/>
+                          <Cell row="1" col="1" text="수주일련번호"/>
+                          <Cell row="1" col="2" text="수주유형분류"/>
+                          <Cell row="1" col="3" text="거래처명"/>
+                          <Cell row="1" col="4" text="수주일자"/>
+                          <Cell row="1" col="5" text="수주요청자"/>
+                          <Cell row="1" col="6" text="수주담당자"/>
+                          <Cell row="1" col="7" text="납품완료여부"/>
+                          <Cell row="1" col="8" text="출고완료여부"/>
+                          <Cell row="1" col="9" text="비고"/>
+                        </Band>
+                        <Band id="body">
+                          <Cell textAlign="center" edittype="none" displaytype="normal" expr="currow+1"/>
+                          <Cell col="1" text="bind:CONTRACT_NO" textAlign="center"/>
+                          <Cell col="2" text="bind:CONTRACT_TYPE" textAlign="center"/>
+                          <Cell col="3" text="bind:CUSTOMER_NAME" textAlign="center"/>
+                          <Cell col="4" text="bind:CONTRACT_DATE" textAlign="center"/>
+                          <Cell col="5" text="bind:CONTRACT_REQUESTER" textAlign="center"/>
+                          <Cell col="6" text="bind:EMP_NAME_IN_CHARGE" textAlign="center"/>
+                          <Cell col="7" text="bind:DELIVERY_COMPLETION_STATUS" textAlign="center"/>
+                          <Cell col="8" text="bind:RELEASE_COMPLETION_STATUS"/>
+                          <Cell col="9" text="bind:DESCRIPTION" textAlign="center"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                  <Grid id="Grid01" taborder="8" left="0" top="349" width="1240" height="240" binddataset="gds_contractDetail" oncellclick="Tab_Tabpage1_Grid01_oncellclick" color="orangered">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="25"/>
+                          <Column size="30"/>
+                          <Column size="150"/>
+                          <Column size="130"/>
+                          <Column size="80"/>
+                          <Column size="80"/>
+                          <Column size="80"/>
+                          <Column size="80"/>
+                          <Column size="90"/>
+                          <Column size="100"/>
+                          <Column size="120"/>
+                          <Column size="80"/>
+                          <Column size="80"/>
+                          <Column size="90"/>
+                          <Column size="100"/>
+                          <Column size="100"/>
+                          <Column size="100"/>
+                          <Column size="30"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="24" band="head"/>
+                          <Row size="30" band="head"/>
+                          <Row size="26"/>
+                        </Rows>
+                        <Band id="head">
+                          <Cell colspan="17" text="출고가능 수주상세"/>
+                          <Cell col="17"/>
+                          <Cell row="1"/>
+                          <Cell row="1" col="1" displaytype="checkboxcontrol" edittype="checkbox" text="expr:0" textAlign="center"/>
+                          <Cell row="1" col="2" text="수주상세일련번호" textAlign="center"/>
+                          <Cell row="1" col="3" text="수주일련번호" textAlign="center"/>
+                          <Cell row="1" col="4" text="품목코드" textAlign="center"/>
+                          <Cell row="1" col="5" text="품목명" textAlign="center"/>
+                          <Cell row="1" col="6" text="단위" textAlign="center"/>
+                          <Cell row="1" col="7" text="납기일" textAlign="center"/>
+                          <Cell row="1" col="8" text="견적수량" textAlign="center"/>
+                          <Cell row="1" col="9" text="재고사용량" textAlign="center"/>
+                          <Cell row="1" col="10" text="필요제작수량" textAlign="center"/>
+                          <Cell row="1" col="11" text="단가" textAlign="center"/>
+                          <Cell row="1" col="12" text="합계액" textAlign="center"/>
+                          <Cell row="1" col="13" text="처리상태" textAlign="center"/>
+                          <Cell row="1" col="14" text="작업완료여부" textAlign="center"/>
+                          <Cell row="1" col="15" text="납품완료여부" textAlign="center"/>
+                          <Cell row="1" col="16" text="출고완료여부" textAlign="center"/>
+                          <Cell row="1" col="17"/>
+                        </Band>
+                        <Band id="body">
+                          <Cell expr="currow+1"/>
+                          <Cell col="1" displaytype="checkboxcontrol" text="bind:CHECKED" textAlign="center"/>
+                          <Cell col="2" text="bind:CONTRACT_DETAIL_NO" textAlign="center"/>
+                          <Cell col="3" text="bind:CONTRACT_NO" textAlign="center"/>
+                          <Cell col="4" text="bind:ITEM_CODE" textAlign="center"/>
+                          <Cell col="5" text="bind:ITEM_NAME" textAlign="center"/>
+                          <Cell col="6" text="bind:UNIT_OF_CONTRACT" textAlign="center"/>
+                          <Cell col="7" text="bind:DUE_DATE_OF_CONTRACT" textAlign="center" edittype="date" calendardateformat="yyyy-MM-dd" displaytype="date"/>
+                          <Cell col="8" text="bind:ESTIMATE_AMOUNT" textAlign="center"/>
+                          <Cell col="9" text="bind:STOCK_AMOUNT_USE" textAlign="center"/>
+                          <Cell col="10" text="bind:PRODUCTION_REQUIREMENT" textAlign="center"/>
+                          <Cell col="11" text="bind:UNIT_PRICE_OF_CONTRACT" textAlign="center"/>
+                          <Cell col="12" text="bind:SUM_PRICE_OF_CONTRACT" textAlign="center"/>
+                          <Cell col="13" text="bind:PROCESSING_STATUS" textAlign="center"/>
+                          <Cell col="14" text="bind:OPERATION_COMPLETED_STATUS" textAlign="center"/>
+                          <Cell col="15" text="bind:DELIVERY_COMPLETION_STATUS" textAlign="center"/>
+                          <Cell col="16" text="bind:RELEASE_COMPLETION_STATUS" textAlign="center"/>
+                          <Cell col="17"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+            <Tabpage id="Tabpage2" text="출고현황" font="12px/normal &quot;Calibri&quot;">
+              <Layouts>
+                <Layout>
+                  <Grid id="Grid00" taborder="0" left="0.00" top="73" width="1250" height="240" binddataset="gds_releaseInfo" color="orangered" scrolltype="both" oncelldblclick="Tab_Tabpage2_Grid00_oncelldblclick" selectscrollmode="scroll" scrollbarsize="20">
+                    <Formats>
+                      <Format id="default">
+                        <Columns>
+                          <Column size="20"/>
+                          <Column size="30"/>
+                          <Column size="135"/>
+                          <Column size="140"/>
+                          <Column size="90"/>
+                          <Column size="75"/>
+                          <Column size="131"/>
+                          <Column size="106"/>
+                          <Column size="95"/>
+                          <Column size="95"/>
+                          <Column size="95"/>
+                          <Column size="70"/>
+                          <Column size="85"/>
+                          <Column size="100"/>
+                          <Column size="100"/>
+                          <Column size="105"/>
+                        </Columns>
+                        <Rows>
+                          <Row size="24" band="head"/>
+                          <Row size="24"/>
+                        </Rows>
+                        <Band id="head">
+                          <Cell/>
+                          <Cell col="1" displaytype="checkboxcontrol" edittype="checkbox"/>
+                          <Cell col="2" text="출고일련번호"/>
+                          <Cell col="3" text="수주상세일련번호"/>
+                          <Cell col="4" text="거래처명"/>
+                          <Cell col="5" text="픔목코드"/>
+                          <Cell col="6" text="품목명"/>
+                          <Cell col="7" text="택배사"/>
+                          <Cell col="8" text="등록일자"/>
+                          <Cell col="9" text="요청마감일"/>
+                          <Cell col="10" text="출고예정일"/>
+                          <Cell col="11" text="단위"/>
+                          <Cell col="12" text="출고수량"/>
+                          <Cell col="13" text="출고담당자"/>
+                          <Cell col="14" text="창고코드"/>
+                          <Cell col="15" text="검사상태"/>
+                        </Band>
+                        <Band id="body">
+                          <Cell expr="currow+1" textAlign="center"/>
+                          <Cell col="1" edittype="checkbox" displaytype="checkboxcontrol" text="bind:CHECKED"/>
+                          <Cell col="2" text="bind:RELEASE_NO" textAlign="center"/>
+                          <Cell col="3" text="bind:CONTRACT_DETAIL_NO" textAlign="center"/>
+                          <Cell col="4" text="bind:CUSTOMER_NAME" textAlign="center"/>
+                          <Cell col="5" text="bind:ITEM_CODE" textAlign="center"/>
+                          <Cell col="6" text="bind:ITEM_NAME" textAlign="center"/>
+                          <Cell col="7" text="bind:VEHICLE_SELECTED" textAlign="center"/>
+                          <Cell col="8" text="bind:REGISTER_DATE" textAlign="center"/>
+                          <Cell col="9" text="bind:DUE_DATE" textAlign="center"/>
+                          <Cell col="10" text="bind:PLANNED_RELEASE_DATE" textAlign="center"/>
+                          <Cell col="11" text="bind:UNIT_OF_STOCK" textAlign="center"/>
+                          <Cell col="12" text="bind:RELEASE_AMOUNT" textAlign="center"/>
+                          <Cell col="13" text="bind:PERSON_IN_CHARGE" textAlign="center"/>
+                          <Cell col="14" text="bind:WAREHOUSE_CODE" textAlign="center"/>
+                          <Cell col="15" text="bind:INSPECTION_STATUS" textAlign="center"/>
+                        </Band>
+                      </Format>
+                    </Formats>
+                  </Grid>
+                  <Static id="Static00" taborder="1" text="🚚출고등록현황" left="1035.00" top="25" width="188" height="38" font="20px/normal &quot;Calibri&quot;" color="orange" letterSpacing="5px" textDecoration="underline"/>
+                  <Button id="release_Button" taborder="2" text="출고현황조회" left="0.00" top="21" width="120" height="37" color="black" background="lightgray" font="bold 10pt/normal &quot;Calibri&quot;" onclick="Tab_Tabpage2_release_Button_onclick" borderRadius="5px"/>
+                  <Button id="deleteBtn" taborder="3" text="삭제" left="133.00" top="21" width="77" height="37" background="lightgray" color="dimgray" font="bold 10pt/normal &quot;Calibri&quot;" onclick="Tab_Tabpage2_deleteBtn_onclick" borderRadius="5px"/>
+                </Layout>
+              </Layouts>
+            </Tabpage>
+          </Tabpages>
+        </Tab>
+      </Layout>
+    </Layouts>
+    <Script type="xscript5.1"><![CDATA[/*******************************************************************************************************************************/
+/* 프 로 그 램 : C:\Users\Jihyo Park\Desktop\77th 2nd Nexa Logi\Nexacro_Front\busi\output.xfdl
+/* 작 성 일 자 : 2024/01/26
+/* 작  성   자 : 박**
+/* 설       명 : 출고관리 테이블명 OUTPUT -> RELEASE로 변경하고 백단은 수정했으나 앞단 파일명은 너무 복잡해져서 수정하지 못했음.
+/*******************************************************************************************************************************/
+
+include "Lib::commLib.xjs";
+var nexa = nexacro.getApplication();
+var outPath = this.Tab.Tabpage1;
+var outPath2 = this.Tab.Tabpage1.form;
+
+this.output_onload = function(obj:nexacro.Form,e:nexacro.LoadEventInfo)
+{
+   obj.set_titletext("output");
+   nexa.gds_contractInfo.clearData();
+   nexa.gds_contractDetail.clearData();
+   nexa.gds_releaseInfo.clearData();
+   outPath2.Calendar00.visible = false;
+   outPath2.Calendar01.visible = false;
+   outPath2.codeEdit.visible = false;
+}; 
+
+
+//** 수주검색조건 선택시 **/
+this.Tab_Tabpage1_searchRadio_onitemchanged = function(obj:nexacro.Radio,e:nexacro.ItemChangeEventInfo)
+{
+   var searchCon=obj.value;
+   if(searchCon=="searchByDate"){
+      outPath2.codeEdit.set_visible("false");
+      outPath2.Calendar00.set_visible("true");
+      outPath2.Calendar01.set_visible("true");
+   }
+   if(searchCon=="searchByCustomer") {
+      outPath2.codeEdit.set_visible("true");
+      outPath2.Calendar00.set_visible("false");
+      outPath2.Calendar01.set_visible("false");
+   }
+   trace("obj.value: "+obj.value);
+};
+
+
+//** 거래처 조회 **/
+this.Tab_Tabpage1_codeEdit_oneditclick = function(obj:nexacro.Edit,e:nexacro.EditClickEventInfo)
+{
+   trace("모달 호출 시도 중...");
+   this.gfn_showModal(
+	"CustomerCode",
+	{pFrame:"output",divisionCode:"CL-01", eForm:obj},
+	"Base::CommonDialog.xfdl",
+	"popupCallBack",
+	this,
+	500,
+	380,
+	true,
+	true,
+	null);
+   
+};
+
+
+//** 운송수단 조회**//
+this.Tab_Tabpage1_selectVehicle_Button_onclick = function(obj:nexacro.Edit,e:nexacro.EditClickEventInfo)
+{
+    trace("모달 호출 시도 중...");
+    this.gfn_showModal(
+        "CustomerCode",
+        { pFrame: "output", divisionCode: "SM-01", eForm: obj },
+        "Base::CommonDialog.xfdl",
+        "popupCallBack",
+        this,
+        500,
+        380,
+        true,
+        true,
+        null
+    );
+    trace("모달 호출 완료");
+};
+
+
+
+//** 출고가능 수주조회 **/
+// this.Tab_Tabpage1_searchCont_Button_onclick = function(obj:nexacro.Button, e:nexacro.ClickEventInfo){
+// 	 trace("this.Tab.searchCnt_GroupBox.form.Calendar00: "+ this.Tab.searchCnt_GroupBox.form.Calendar00.text);
+//      trace("this.Tab.searchCnt_GroupBox.form.Calendar01: "+ this.Tab.searchCnt_GroupBox.form.Calendar01.text);
+// 		var CstartDate=this.Tab.searchCnt_GroupBox.form.Calendar00.text;
+// 		var CendDate=this.Tab.searchCnt_GroupBox.form.Calendar01.text;
+// 		customerCode=g_customerCode;
+// 	   
+// 		trace("CstartDate: "+ CstartDate);
+// 		trace("CendDate: "+ CendDate);
+// 		trace("searchType: "+ searchType);
+// 		trace("customerCode: "+customerCode);
+// 		
+// 		if (searchCondition == null || searchCondition === "") {
+// 		   alert("검색유형을 선택해주세요~"); 
+// 		   return;
+// 		} else if (searchCondition === "searchByDate") {
+// 				if (startDate.length === 0 || endDate.length === 0) { 
+// 				alert("검색기간을 입력해주세요"); 
+// 				return;
+// 		   }
+// 	   } else if (searchCondition === "searchByCustomer") {
+// 		   if (customerCode == null || customerCode === "") {
+// 			   alert("거래처 정보를 입력해주세요"); 
+// 			   return;
+// 		   }
+// 	   }
+// 		
+// 	   this.transaction(
+// 		  "search_OutputContractList",
+// 		  "svcSales::release/list/contractAvailable",
+// 		  "gds_contractInfo=gds_contractInfo gds_contractDetail=gds_contractDetail",
+// 		  "gds_contractInfo=gds_contractInfo gds_contractDetail=gds_contractDetail",
+// 		  "firstDate='"+CstartDate+"' endDate='"+CendDate+"' searchCondition='"+searchType+"' customerCode='"+customerCode+"'",
+// 		  "callback",
+// 		  false
+// 	   );
+// 	   
+// 	   trace("전송할 args: " + args);
+// 	   this.transaction(id, url, reqData, resData, args, callback);
+// 	   nexa.gds_contractDetail.filter("CONTRACT_NO==''");
+// 	   trace("회사코드: " + customerCode);
+// 		
+// };
+
+
+
+
+
+this.Tab_Tabpage1_searchCont_Button_onclick = function(obj:nexacro.Button, e:nexacro.ClickEventInfo)
+{
+   trace("클릭");
+
+   var searchCondition = outPath2.searchRadio.value; 
+   var startDate = outPath2.Calendar00.text ? nexacro.trim(outPath2.Calendar00.text) : "";
+   var endDate = outPath2.Calendar01.text ? nexacro.trim(outPath2.Calendar01.text) : "";
+   //var customerCode = "PTN-01";
+   /*var customerCode = nexa.gds_codeDetail.getColumn("DETAIL_CODE");*/
+   customerCode=g_customerCode;
+
+   trace("customerCode: " + customerCode);
+   trace("searchCondition: " + searchCondition);
+
+   // 검색 조건 유효성 검사
+   if (searchCondition == null || searchCondition === "") {
+       alert("검색유형을 선택해주세요~"); 
+       return;
+   } else if (searchCondition === "searchByDate") {
+       if (startDate.length === 0 || endDate.length === 0) { 
+           alert("검색기간을 입력해주세요"); 
+           return;
+       }
+   } else if (searchCondition === "searchByCustomer") {
+       if (customerCode == null || customerCode === "") {
+           alert("거래처 정보를 입력해주세요"); 
+           return;
+       }
+   }
+
+   // 전송할 데이터 설정
+   var id = "search_OutputContractList";
+   var url = "svcSales::release/list/contractAvailable";
+   var reqData = "gds_contractInfo=gds_contractInfo gds_contractDetail=gds_contractDetail";
+   var resData = "gds_contractInfo=gds_contractInfo gds_contractDetail=gds_contractDetail";
+  
+	
+   // URL 인코딩하여 안전하게 전송
+   var args = "searchCondition=" + encodeURIComponent(searchCondition) + 
+              " startDate=" + encodeURIComponent(startDate) + 
+              " endDate=" + encodeURIComponent(endDate) + 
+              " customerCode=" + encodeURIComponent(customerCode);
+   var callback = "callback";
+
+   // transaction 호출
+   trace("전송할 args: " + args);
+   this.transaction(id, url, reqData, resData, args, callback);
+
+   // 데이터 필터링 (필요에 따라 조정 가능)
+   nexa.gds_contractDetail.filter("CONTRACT_NO == ''");
+   trace("회사코드: " + customerCode);
+};
+
+
+
+//** 출고가능 수주상세 **/
+this.Tab_Tabpage1_Grid00_oncellclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+   var contractNo = nexa.gds_contractInfo.getColumn(e.row,"CONTRACT_NO")
+   nexa.gds_contractDetail.filter("CONTRACT_NO == '"+contractNo+"'");
+   trace("contractNo: " +contractNo);
+   
+};
+
+
+
+
+//** 수주상세 셀클릭 **/
+this.Tab_Tabpage1_Grid01_oncellclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+	trace("모달 호출 시도 중...");
+   var cNo = nexa.gds_contractDetail.getColumn(e.row,'CONTRACT_DETAIL_NO');
+   trace(cNo);
+   trace('클릭값체크'+nexa.gds_contractDetail.getColumn(e.row,"CHECKED"));
+   
+   var check = nexa.gds_contractDetail.getColumn(e.row,"CHECKED");
+   
+   if(e.col==1){
+      if(check==null || check=='0'){
+         nexa.gds_contractDetail.setColumn(e.row,"CHECKED",'1');
+      }else{
+         nexa.gds_contractDetail.setColumn(e.row,"CHECKED",'0');
+      }
+   }
+};
+
+
+//** 출고등록 **/ 
+this.Tab_Tabpage1_AddOutput_Button_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+   var rowNo = nexa.gds_contractDetail.findRow("CHECKED","1");
+   trace("rowNo:"+rowNo);
+   
+   var contractDetailNo = nexa.gds_contractDetail.getColumn(rowNo, "CONTRACT_DETAIL_NO");
+   var processingStatus = nexa.gds_contractDetail.getColumn(rowNo,"PROCESSING_STATUS");
+   var operationCompletedStatus = nexa.gds_contractDetail.getColumn(rowNo,"OPERATION_COMPLETED_STATUS");
+   var deliveryCompletionStatus = nexa.gds_contractDetail.getColumn(rowNo,"DELIVERY_COMPLETION_STATUS");
+   
+   var vehicleSelected = this.Tab.Tabpage1.form.selectVehicle_Button.value;
+
+   if(rowNo == -1){
+	alert("출고할 물품을 선택해주세요");
+	return;
+   }
+   if(processingStatus == null){
+	alert("처리되지 않은 항목입니다.\r\n MPS계획수립부터 작업까지 완료해주세요. ");
+	return;
+   }
+   else if(operationCompletedStatus == null){
+	alert("작업이 완료되지 않은 항목입니다. \r\n 작업지시 및 작업완료까지 완료해주세요.");
+	return;
+   }
+   else if(deliveryCompletionStatus == "Y"){
+	alert("납품이 완료된 항목입니다");
+	return;
+   }
+   else if(deliveryCompletionStatus == "Y"){
+	alert("납품이 완료된 항목입니다");
+	return;
+   }
+   else if (!vehicleSelected || vehicleSelected.trim() === "") {
+        alert("운송수단을 선택해주세요");
+        return;
+   }else{
+   const o = confirm(contractDetailNo);
+	  const bool = confirm("출고 등록 하시겠습니까?");
+	  if(bool){
+       var id = "batch_releaseRegist";
+       var url =   "svcSales::releaseRegist";
+       var reqData =   "";
+       var resData =  "";
+       var args = "contractDetailNo='"+contractDetailNo+"'vehicleSelected='"+vehicleSelected+"'";
+       var callback =  "callback";
+	   this.transaction(id, url, reqData, resData, args, callback);
+	   //this.close();
+	   }
+   }
+}
+
+//** 콜백함수 **/
+this.callback = function(trid, ErrorCode, ErrorMsg) { 
+    trace("트랜잭션 ID: " + trid);
+    trace("에러 코드: " + ErrorCode);
+    trace("에러 메시지: " + ErrorMsg);
+
+    if (trid.indexOf("search") != -1) {
+        if (ErrorCode < 0) {
+            alert("조회 실패 : " + ErrorMsg);
+        }
+    } else if (trid.indexOf("batch") != -1) {
+        if (ErrorCode < 0) {
+            alert("오류 : 실패 : " + ErrorMsg);
+        } else {
+            alert("완료!");
+            this.reload();
+        }
+    }
+}
+
+
+//** 출고현황조회 **/
+this.Tab_Tabpage2_release_Button_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+
+      var id = "search_ReleaseInfoList";
+      var url = "svcSales::releaseRegist/list";
+      var reqData = "";
+      var resData = "gds_releaseInfo=gds_releaseInfo";
+      var args =  "";
+      var callback = "callback";
+	  
+	  this.transaction(id, url, reqData, resData, args, callback);
+   
+};
+
+/** 수정 다이알로그 호출 **/
+this.Tab_Tabpage2_Grid00_oncelldblclick = function(obj:nexacro.Grid,e:nexacro.GridClickEventInfo)
+{
+    var reNo = nexa.gds_releaseInfo.getColumn(e.row,'RELEASE_NO');
+	trace("reNo: " + reNo);
+	
+	this.gfn_showModal(
+        "releaseDialog",
+        {releaseNo:reNo},
+        "busi::outputRegister.xfdl",
+        "popupCallBack",
+        this,
+        370,
+        410,
+        true,
+        true,
+        null
+	)
+};
+
+/** 삭제 버튼 **/
+this.Tab_Tabpage2_deleteBtn_onclick = function(obj:nexacro.Button,e:nexacro.ClickEventInfo)
+{
+	var rowNo = nexa.gds_releaseInfo.findRow("CHECKED","1");
+	trace("rowNo:"+rowNo);
+	var releaseNo = nexa.gds_releaseInfo.getColumn(rowNo, "RELEASE_NO");
+	trace("releaseNo:"+releaseNo);
+	
+	const bool = confirm("삭제하시겠습니까?\n(해당 출고 관련 정보가 모두 삭제됩니다.)");
+	
+	if (bool) {
+      var id = "delete_ReleaseInfo";
+      var url = "svcSales::delete/releaseInfo";
+      var reqData = "";
+      var resData = "";
+      var args = "releaseNo="+releaseNo;
+      var callback = "callback";
+      
+      this.transaction(id, url, reqData, resData, args, callback);
+      
+      alert("삭제되었습니다");
+      this.close();
+   }
+};
+]]></Script>
+    <Objects/>
+  </Form>
+</FDL>

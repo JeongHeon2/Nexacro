@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.seoulit.logistics.busisvc.sales.mapper.DeliveryMapper">
+
+    <resultMap type="kr.co.seoulit.logistics.busisvc.sales.dto.DeliveryInfoResDto" id="deliveryInfoResult">
+        <result property="deliveryNo" column="DELIVERY_NO"/>
+        <result property="estimateNo" column="ESTIMATE_NO"/>
+        <result property="contractNo" column="CONTRACT_NO"/>
+        <result property="contractDetailNo" column="CONTRACT_DETAIL_NO"/>
+        <result property="customerCode" column="CUSTOMER_CODE"/>
+        <result property="personCodeInCharge" column="PERSON_CODE_IN_CHARGE"/>
+        <result property="itemCode" column="ITEM_CODE"/>
+        <result property="itemName" column="ITEM_NAME"/>
+        <result property="unitOfDelivery" column="UNIT_OF_DELIVERY"/>
+        <result property="deliveryAmount" column="DELIVERY_AMOUNT"/>
+        <result property="unitPrice" column="UNIT_PRICE"/>
+        <result property="sumPrice" column="SUM_PRICE"/>
+        <result property="deliveryDate" column="DELIVERY_DATE"/>
+        <result property="deliveryPlaceName" column="DELIVERY_PLACE_NAME"/>
+    </resultMap>
+
+    <select id="selectDeliveryInfoList" parameterType="kr.co.seoulit.logistics.busisvc.sales.dto.DeliveryInfoResDto" resultType="kr.co.seoulit.logistics.busisvc.sales.dto.DeliveryInfoResDto">
+        SELECT * FROM DELIVERY_INFO
+        ORDER BY DELIVERY_DATE DESC, DELIVERY_NO DESC
+    </select>
+
+<!--    <select id="selectDeliveryInfoListByDeliverydate" parameterType="map" resultMap="deliveryInfoResult">-->
+<!--		<![CDATA[-->
+<!--        select *-->
+<!--        from delivery_info d-->
+<!--        where 1 = 1-->
+<!--          AND d.delivery_date BETWEEN to_char(to_date(#{startDate}, 'yyyy/mm/dd'), 'yyyy-mm-dd')-->
+<!--            AND to_char(to_date(#{endDate}, 'yyyy/mm/dd'), 'yyyy-mm-dd')-->
+<!--        ]]>-->
+<!--	</select>-->
+
+    <insert id="insertDeliveryResult" parameterType="kr.co.seoulit.logistics.busisvc.sales.dto.DeliveryInfoReqDto">
+        INSERT INTO DELIVERY_INFO
+        VALUES (#{deliveryNo},
+                #{estimateNo},
+                #{contractNo},
+                #{contractDetailNo},
+                #{customerCode},
+                #{personCodeInCharge},
+                #{itemCode},
+                #{itemName},
+                #{unitOfDelivery},
+                #{deliveryAmount},
+                #{unitPrice},
+                #{sumPrice},
+                #{deliveryDate},
+                #{deliveryPlaceName})
+    </insert>
+
+
+    <!--    정헌 2024/10/22 수정함-->
+    <parameterMap type="map" id="deliverParameter">
+        <parameter property="contractDetailNo" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="ERROR_CODE" javaType="java.lang.Integer" jdbcType="DECIMAL" mode="OUT"/>
+        <parameter property="ERROR_MSG" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+
+    <select id="deliver" parameterMap="deliverParameter" statementType="CALLABLE">
+		<![CDATA[
+        {call P_DELIVER(?, ?, ?)}
+        ]]>
+	</select>
+<!--    정헌 2024/10/22 수정함-->
+<!--    <select id="deliver" statementType="CALLABLE">-->
+<!--		<![CDATA[-->
+<!--        {call P_DELIVER(-->
+<!--              #{contractDetailNo ,jdbcType=VARCHAR, mode=IN},-->
+<!--              #{ERROR_CODE ,jdbcType=DECIMAL, mode=OUT},-->
+<!--              #{ERROR_MSG,jdbcType=VARCHAR, mode=OUT}-->
+<!--              )}-->
+<!--        ]]>-->
+<!--	</select>-->
+
+    <update id="updateDeliveryResult" parameterType="kr.co.seoulit.logistics.busisvc.sales.dto.DeliveryInfoReqDto">
+        UPDATE DELIVERY_INFO
+        SET DELIVERY_NO           = #{deliveryNo},
+            ESTIMATE_NO           = #{estimateNo},
+            CONTRACT_NO           = #{contractNo},
+            CONTRACT_DETAIL_NO    = #{contractDetailNo},
+            CUSTOMER_CODE         = #{customerCode},
+            PERSON_CODE_IN_CHARGE = #{personCodeInCharge},
+            ITEM_CODE             = #{itemCode},
+            ITEM_NAME             = #{itemName},
+            UNIT_OF_DELIVERY      = #{unitOfDelivery},
+            DELIVERY_AMOUNT       = #{deliveryAmount},
+            UNIT_PRICE            = #{unitPrice},
+            SUM_PRICE             = #{sumPrice},
+            DELIVERY_DATE         = #{deliveryDate},
+            DELIVERY_PLACE_NAME   = #{deliveryPlaceName}
+        WHERE DELIVERY_NO = #{deliveryNo}
+    </update>
+
+    <delete id="deleteDeliveryResult" parameterType="kr.co.seoulit.logistics.busisvc.sales.dto.DeliveryInfoReqDto">
+        DELETE
+        FROM DELIVERY_INFO
+        WHERE DELIVERY_NO = #{deliveryNo}
+    </delete>
+    <select id="selectReturnAbleList" parameterType="kr.co.seoulit.logistics.busisvc.sales.dto.ReverseReqDto" resultType="kr.co.seoulit.logistics.busisvc.sales.dto.ReverseResDto">
+        SELECT A.DELIVERY_NO,
+               A.DELIVERY_DATE,
+               B.CUSTOMER_NAME,
+               A.ITEM_CODE,
+               A.ITEM_NAME,
+               A.DELIVERY_AMOUNT AS RETURN_UNIT,
+               A.UNIT_PRICE      AS RETURN_UNIT_PRICE,
+               A.SUM_PRICE       AS RETURN_SUM_PRICE
+        FROM DELIVERY_INFO A,
+             CUSTOMER B
+        WHERE A.CUSTOMER_CODE = B.CUSTOMER_CODE
+          AND TO_DATE(A.DELIVERY_DATE, 'RRRR-MM-DD HH24:MI:SS') BETWEEN TO_DATE(#{startDate}, 'RRRR-MM-DD') AND TO_DATE(#{endDate}, 'RRRR-MM-DD') + 1
+          AND A.RETURN_STATUS IS NULL
+    </select>
+    <parameterMap type="map" id="insertReturnParameter">
+        <parameter property="deliveryNO" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="itemCode" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="returnUnit" javaType="java.lang.String" jdbcType="VARCHAR" mode="IN"/>
+        <parameter property="ERROR_CODE" javaType="java.lang.Integer" jdbcType="DECIMAL" mode="OUT"/>
+        <parameter property="ERROR_MSG" javaType="java.lang.String" jdbcType="VARCHAR" mode="OUT"/>
+    </parameterMap>
+    <insert id="insertReturnList" parameterMap="insertReturnParameter" statementType="CALLABLE">
+         <![CDATA[
+        {call P_REGISTER_RETURN(?, ?, ?, ?, ?)}
+        ]]>
+    </insert>
+
+<!--    <insert id="insertReturnList" statementType="CALLABLE">-->
+<!--         <![CDATA[-->
+<!--        {call P_REGISTER_RETURN(-->
+<!--              #{deliveryNO, jdbcType=VARCHAR, mode=IN },-->
+<!--              #{itemCode, jdbcType=VARCHAR, mode=IN },-->
+<!--              #{returnUnit, jdbcType=VARCHAR, mode=IN },-->
+<!--              #{ERROR_CODE, jdbcType=DECIMAL, mode=OUT },-->
+<!--              #{ERROR_MSG, jdbcType=VARCHAR, mode=OUT }-->
+<!--              )}-->
+<!--        ]]>-->
+<!--    </insert>-->
+    <select id="selectSalesQuaChart" resultType="kr.co.seoulit.logistics.busisvc.sales.dto.QuarterResDto">
+        SELECT TO_CHAR(TO_date(delivery_date, 'rrrr-mm-dd hh24:mi:ss'), 'q') AS qua,
+               SUM(delivery_amount * unit_price)                                price,
+               SUM(return_price)                                                reverse,
+               SUM(delivery_amount * unit_price) - SUM(return_price)            total_price
+        FROM DELIVERY_INFO
+        GROUP BY TO_CHAR(TO_date(delivery_date, 'rrrr-mm-dd hh24:mi:ss'), 'q')
+    </select>
+</mapper>

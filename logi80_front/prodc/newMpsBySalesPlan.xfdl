@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FDL version="2.1">
+  <Form id="newMpsBySalesPlan" width="1280" height="720" titletext="New Form">
+    <Layouts>
+      <Layout height="720" width="1280">
+        <GroupBox id="GroupBox00" taborder="0" text="MPS 등록(by 판매계획)" left="20.00" top="24" width="1225" height="486" font="normal 700 18pt/normal &quot;맑은 고딕&quot;" color="black" titlealign="topcenter"/>
+        <GroupBox id="GroupBox01" taborder="1" text="판매계획 검색조건" left="50.00" top="70" width="300" height="60" font="normal 700 13pt/normal &quot;맑은 고딕&quot;" color="black"/>
+        <GroupBox id="GroupBox01_00" taborder="2" text="판매계획 검색조건" left="369.00" top="70" width="500" height="60" font="normal bold 13pt/normal &quot;맑은 고딕&quot;" titlealign="topcenter" color="black"/>
+        <Button id="btn_registerNewMps" taborder="3" text="MPS 등록" left="901.00" top="80" width="179" height="50" onclick="btn_addNewMps_onclick" color="white" background="black"/>
+        <Calendar id="c_sDate" taborder="4" left="380.00" top="95" width="150" height="30" color="darkslategray"/>
+        <Calendar id="c_eDate" taborder="5" left="544.00" top="95" width="150" height="30" color="darkslategray"/>
+        <Button id="btn_searchCtDetail" taborder="6" text="검색" left="708.00" top="95" width="150" height="30" onclick="btn_searchCtDetail_onclick" color="white" background="black"/>
+        <Grid id="grd_ctDetail" taborder="7" left="40.00" top="146" width="1200" height="334" binddataset="gds_contractDetailInMpsAvailable" oncellclick="fn_grd_ctDetail_oncellclick" autofittype="col" autoenter="none" onheadclick="grd_ctDetail_onheadclick" color="orangered">
+          <Formats>
+            <Format id="default">
+              <Columns>
+                <Column size="25"/>
+                <Column size="30"/>
+                <Column size="142"/>
+                <Column size="93"/>
+                <Column size="81"/>
+                <Column size="93"/>
+                <Column size="88"/>
+                <Column size="85"/>
+                <Column size="76"/>
+                <Column size="128"/>
+                <Column size="40"/>
+              </Columns>
+              <Rows>
+                <Row size="24" band="head"/>
+                <Row size="24"/>
+              </Rows>
+              <Band id="head">
+                <Cell/>
+                <Cell col="1" displaytype="checkboxcontrol"/>
+                <Cell col="2" text="판매계획일련번호"/>
+                <Cell col="3" text="계획수량"/>
+                <Cell col="4" text="계획단가"/>
+                <Cell col="5" text="계획일자"/>
+                <Cell col="6" text="출하예정일"/>
+                <Cell col="7" text="납기일"/>
+                <Cell col="8" text="품목코드"/>
+                <Cell col="9" text="품목명"/>
+                <Cell col="10" text="단위"/>
+              </Band>
+              <Band id="body">
+                <Cell expr="currow+1"/>
+                <Cell col="1" displaytype="checkboxcontrol" edittype="none" text="bind:CHECKED"/>
+                <Cell col="2" text="bind:CONTRACT_DETAIL_NO" textAlign="center"/>
+                <Cell col="3" text="bind:ESTIMATE_AMOUNT" textAlign="center"/>
+                <Cell col="4" text="bind:PRODUCTION_REQUIREMENT" textAlign="center"/>
+                <Cell col="5" displaytype="normal" edittype="date" calendardateformat="yyyy-MM-dd" calendardisplayinvalidtype="none" text="bind:MPS_PLAN_DATE" textAlign="center"/>
+                <Cell col="6" displaytype="normal" edittype="date" calendardisplaynulltext="0000-00-00" calendardateformat="yyyy-MM-dd" text="bind:SCHEDULED_END_DATE" textAlign="center"/>
+                <Cell col="7" text="bind:DUE_DATE_OF_CONTRACT" textAlign="center"/>
+                <Cell col="8" text="bind:ITEM_CODE" textAlign="center"/>
+                <Cell col="9" text="bind:ITEM_NAME" textAlign="center"/>
+                <Cell col="10" text="bind:UNIT_OF_CONTRACT" textAlign="center"/>
+              </Band>
+            </Format>
+          </Formats>
+        </Grid>
+        <Combo id="Combo00" taborder="8" text="기간별 검색" left="64.00" top="95" width="272" height="30" onitemchanged="Combo00_onitemchanged" value="" index="-1"/>
+      </Layout>
+    </Layouts>
+  </Form>
+</FDL>
