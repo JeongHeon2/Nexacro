@@ -120,3 +120,41 @@ MPS(주생산계획) 수립 후 MRP를 통해 원자재 및 부품 필요 수량
 대량 주문은 납품, 소량 주문은 출고로 구분하여 처리
 
 출고 완료 시 수주 데이터와 동기화
+
+🛠 덤프 파일 넣는 방법
+
+1️⃣ SQL*Plus 접속
+
+sqlplus /nolog 
+
+아래 명령어를 시도하여 접속
+
+conn / as sysdba
+
+2️⃣ 사용자 생성 및 권한 부여
+
+CREATE USER 계정명 IDENTIFIED BY 비밀번호 DEFAULT TABLESPACE system;
+
+GRANT CONNECT, RESOURCE, DBA TO 계정명;
+
+✅ 예시
+
+CREATE USER nexaproject IDENTIFIED BY nexaproject DEFAULT TABLESPACE system;
+
+GRANT CONNECT, RESOURCE, DBA TO nexaproject;
+
+3️⃣ 사용자 계정으로 접속
+
+conn 계정명/비밀번호
+
+✅ 예시
+
+conn nexaproject/nexaproject
+
+이후 SQLPLUS 종료
+
+exit
+
+4️⃣ 덤프 파일 복원
+
+imp userid=계정명/비밀번호 file="C:\경로\파일명.dmp" full=y;
