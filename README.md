@@ -33,6 +33,7 @@ DB Tool: SQLGate for Oracle
 
 
 🔥 주요 기능
+
 ✅ 로그인 기능
 백엔드: Spring Boot + MyBatis를 활용하여 로그인 API 구현
 
@@ -82,6 +83,7 @@ MPS(주생산계획) 기반 자재 필요량 계산
 
 
 🔗 시스템 흐름
+
 1️⃣ 견적 → 수주
 
 고객이 제품을 주문하면 수주를 생성
