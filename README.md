@@ -158,3 +158,7 @@ exit
 4️⃣ 덤프 파일 복원
 
 imp userid=계정명/비밀번호 file="C:\경로\파일명.dmp" full=y;
+
+✅ 예시
+
+imp userid=nexaproject/nexaproject file="C:\Users\wjdgj\OneDrive\바탕 화면\It Project\reactLogi\react.dmp" full=y;
